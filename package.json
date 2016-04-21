@@ -1,0 +1,14 @@
+{
+  "name": "web-security",
+  "version": "0.0.0",
+  "description": "An exmaple of securing web apps using Node + MySQL",
+  "main": "app.js",
+  "scripts": {},
+  "author": "Tyler Rockwood <rockwotj@rose-hulman.edu>",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.15.0",
+    "express": "^4.13.4",
+    "mysql": "^2.10.2"
+  }
+}
