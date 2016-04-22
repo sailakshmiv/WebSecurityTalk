@@ -1,0 +1,51 @@
+<script id="rows" type="text/html">
+  {{#todos}}
+  <tr>
+    <td>
+      <div class="row">
+        <div key="{{id}}" class="task col-md-4">{{task}}</div>
+        <div class="col-md-4 col-md-offset-4">
+          <span key="{{id}}" task="{{task}}" class="glyphicon glyphicon-pencil"></span>
+          <span key="{{id}}" style="margin-left: 10px;" class="glyphicon glyphicon-trash"></span>
+        </div>
+      </div>
+    </td>
+    <td>
+      <input type="checkbox" key="{{id}}" {{#done}}checked{{/done}}>
+    </td>
+  </tr>
+  {{/todos}}
+</script>
+
+<script id="login" type="text/html">
+
+</script>
+
+<script id="home" type="text/html">
+  <h1>Todo List</h1>
+  <button class="btn btn-primary pull-right" id="addTodo">Add TODO</button>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Todo</th>
+        <th>Done?</th>
+      </tr>
+    </thead>
+    <tbody id="table-body">
+    </tbody>
+  </table>
+</script>
+
+<script id="editDialog" type="text/html">
+  <div class="row ">
+    <label class="col-md-4">Task:</label>
+    <input id="editTaskText" class="col-md-7" type="text" value="{{task}}">
+  </div>
+</script>
+
+<script id="addDialog" type="text/html">
+  <div class="row ">
+    <label class="col-md-4">Task:</label>
+    <input id="addTaskText" class="col-md-7" type="text" placeholder="Enter your task here"> 
+  </div>
+</script>

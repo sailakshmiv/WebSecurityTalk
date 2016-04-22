@@ -1,7 +1,7 @@
 mysql      = require 'mysql'
 express    = require 'express'
 bodyParser = require 'body-parser'
-_ = require 'underscore'
+_          = require 'underscore'
 
 connection = mysql.createConnection
   host     : 'localhost'
@@ -36,31 +36,38 @@ app.use bodyParser.json()
 
 connection.connect()
 
-app.get '/api', (req, res) ->
+app.get '/api', (req, res, next) ->
   connection.query 'SELECT * from todos', (err, rows, fields) ->
-    throw err if err
-    res.json rows
+    next err if err
+    res.json rows.map (t) ->
+      t.done = !!t.done
+      t
 
-app.post '/api', (req, res) ->
+app.post '/api', (req, res, next) ->
   todo = _.pick req.body, 'task', 'done'
   connection.query 'INSERT INTO todos SET ?', todo, (err, result) ->
-    throw err if err
+    return next err if err
     connection.query 'SELECT * from todos WHERE id=?', result.insertId, (err, rows, fields) ->
-      throw err if err
-      res.json rows[0]
+      return next err if err
+      todo = rows[0]
+      todo.done = !!todo.done
+      res.json todo
 
-app.put '/api/:id', (req, res) ->
+app.put '/api/:id', (req, res, next) ->
   todo = _.pick req.body, 'task', 'done'
   id = req.params.id
   connection.query 'UPDATE todos SET ? WHERE id=?', [todo, id], (err, result) ->
-    throw err if err
+    return next err if err
     connection.query 'SELECT * from todos WHERE id=?', id, (err, rows, fields) ->
-      throw err if err
-      res.json rows[0]
+      return next err if err
+      todo = rows[0]
+      todo.done = !!todo.done
+      res.json todo
     
-app.delete '/api/:id', (req, res) ->
-  connection.query 'DELETE FROM todos WHERE id=?', req.params.id, (err, results) ->
-    throw err if err
+app.delete '/api/:id', (req, res, next) ->
+  id = req.params.id
+  connection.query 'DELETE FROM todos WHERE id=?', id, (err, results) ->
+    return next err if err
     res.json results
 
 
