@@ -3,7 +3,9 @@
   "version": "0.0.0",
   "description": "An exmaple of securing web apps using Node + MySQL",
   "main": "app.js",
-  "scripts": {},
+  "scripts": {
+    "start": "node app.js"
+  },
   "author": "Tyler Rockwood <rockwotj@rose-hulman.edu>",
   "license": "MIT",
   "dependencies": {

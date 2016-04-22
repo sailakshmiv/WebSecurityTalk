@@ -17,12 +17,9 @@
   {{/todos}}
 </script>
 
-<script id="login" type="text/html">
-
-</script>
-
 <script id="home" type="text/html">
   <h1>Todo List</h1>
+  <button class="btn btn-primary pull-right" id="logout">Logout</button>
   <button class="btn btn-primary pull-right" id="addTodo">Add TODO</button>
   <table class="table table-striped">
     <thead>
@@ -49,3 +46,23 @@
     <input id="addTaskText" class="col-md-7" type="text" placeholder="Enter your task here"> 
   </div>
 </script>
+
+<script id="login" type="text/html">
+  <div class="col-md-offset-4 col-md-4">
+    <h2>Please sign in</h2>
+    <label for="inputUsername" class="sr-only">Username</label>
+    <input type="text" id="inputUsername" class="form-control" placeholder="username" required="" autofocus="">
+    <label for="inputPassword" class="sr-only">Password</label>
+    <input type="password" id="inputPassword" class="form-control" placeholder="Password" required="">
+    <br>
+    <div class="alert alert-danger hidden" id="signInError">
+      <strong>Error!</strong> Error signing in
+    </div>
+    <div class="alert alert-danger hidden" id="signUpError">
+      <strong>Error!</strong> Error signing up
+    </div>
+    <button id="signIn" class="btn btn-lg btn-primary btn-block">Login</button>
+    <button id="signUp" class="btn btn-lg btn-primary btn-block">Sign up</button>
+  </div>
+</script>
+
