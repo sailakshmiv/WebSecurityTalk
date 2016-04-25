@@ -9,7 +9,9 @@ const uuid = require('node-uuid');
 
 const connection = mysql.createConnection({
   host: 'localhost',
-  database: 'test'
+  database: 'test',
+  user: 'rockwotj',
+  password: 'foobar'
 });
 
 const app = express();
@@ -20,7 +22,7 @@ app.use(bodyParser.json());
 
 connection.connect();
 
-// Create table first
+// # Create table first
 //
 // CREATE TABLE todos(
 //   id INT NOT NULL AUTO_INCREMENT,
@@ -29,7 +31,7 @@ connection.connect();
 //   PRIMARY KEY ( id )
 // )
 //
-// Then create user table
+// # Then create user table
 //
 // CREATE TABLE users(
 //   username VARCHAR(10) NOT NULL,
@@ -38,10 +40,16 @@ connection.connect();
 //   PRIMARY KEY (username)
 // )
 //
-// and migrate todos table
+// # and migrate todos table
 //
 // ALTER TABLE todos ADD COLUMN user VARCHAR(10); 
 // ALTER TABLE FOREIGN KEY (user) REFERENCES users(username);
+//
+// # TODO: Figure out permissions...
+// # Add a user to MySQL 
+// create user 'rockwotj'@'localhost' identified by 'pass';
+// # Add them to that db
+// grant all privileges on test.* to rockwotj@'localhost' identified by 'pass';
 
 const secret = 'foobar';
 
