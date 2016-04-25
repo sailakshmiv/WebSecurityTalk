@@ -4,7 +4,7 @@ This talk is mostly about how to secure a RESTful API.
 
 ## Install and Setup
 
-**Step 1.** Clone https://github.com/RoseHulmanHackers/WebSecurityTalk.git
+**Step 1.** `git clone https://github.com/RoseHulmanHackers/WebSecurityTalk.git`
 
 **Step 2.** `cd WebSecurityTalk`
 
