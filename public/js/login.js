@@ -1,7 +1,24 @@
 
+function isLoggedIn() {
+  // TODO
+};
+
+function setToken(token) {
+  // TODO
+};
+
+function getToken() {
+  // TODO
+};
+
 function loadLogin() {
   $('#main').empty().mustache('login');
   setLoginBindings();
+};
+
+function logout() {
+  setToken(null);
+  loadLogin();
 };
 
 function setLoginBindings() {
@@ -17,7 +34,7 @@ function setLoginBindings() {
       method: 'POST',
       data: JSON.stringify(data)
     }).then(function(data) {
-      localStorage.setItem('token', data.token);
+      setToken(data.token);
       loadHome();
     }, function() {
       $('signUpError').removeClass('hidden');
@@ -36,7 +53,7 @@ function setLoginBindings() {
       method: 'POST',
       data: JSON.stringify(data)
     }).then(function(data) {
-      localStorage.setItem('token', data.token);
+      setToken(data.token);
       loadHome();
     }, function() {
       $('signInError').removeClass('hidden');
@@ -44,17 +61,3 @@ function setLoginBindings() {
     });
   });
 };
-
-function logout() {
-  localStorage.setItem('token', null);
-  loadLogin();
-};
-
-function isLoggedIn() {
-  return !!localStorage.getItem('token');
-};
-
-function getToken() {
-  return localStorage.getItem('token');
-};
-

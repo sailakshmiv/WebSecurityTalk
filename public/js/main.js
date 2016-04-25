@@ -1,11 +1,8 @@
+
 $(document).ready(function() {
   $.Mustache.load('templates.html')
   .done(function() {
-    if (isLoggedIn()) {
-      loadHome();
-    } else {
-      loadLogin();
-    }
+    loadHome();
   });
 });
 
@@ -17,11 +14,7 @@ $.ajaxSetup({
 
 function loadHome() {
   $('#main').empty().mustache('home'); 
-  $.ajaxSetup({
-    headers: {
-      "X-Auth-Token": getToken()
-    }
-  });
+  // TODO
   getTodos();
   setMainBindings();
 };

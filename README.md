@@ -14,3 +14,8 @@ This talk is mostly about how to secure a RESTful API.
 
 You are ready to go! View `http://localhost:3000` to see the starting code in action!
 
+## Notes
+
+Please note that this is setup as a learning example, and simplicy and ease of setup
+was the goal for this starter code. It by no means is a set up appropriate for anything
+but a trivial example.
