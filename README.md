@@ -10,7 +10,9 @@ This talk is mostly about how to secure a RESTful API.
 
 **Step 3.** `npm install`
 
-**Step 4.** `npm start`
+**Step 4.** Replace `<DB NAME>` in `app.js` with the name of the database given to you.
+
+**Step 5.** `npm start`
 
 You are ready to go! View `http://localhost:3000` to see the starting code in action!
 
