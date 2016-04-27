@@ -14,7 +14,7 @@ This talk is mostly about how to secure a RESTful API.
 
 **Step 5.** `npm start`
 
-You are ready to go! View `http://localhost:3000` to see the starting code in action!
+You are ready to go! View `http://localhost:8080` to see the starting code in action!
 
 ## Notes
 
