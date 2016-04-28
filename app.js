@@ -2,16 +2,18 @@ const mysql = require('mysql');
 const express = require('express');
 const bodyParser = require('body-parser');
 const _ = require('underscore');
+const fs = require('fs');
 const md5 = require('blueimp-md5');
 const jwt = require('jsonwebtoken');
 const uuid = require('node-uuid');
 
+const SECRETS = JSON.parse(fs.readFileSync('secrets.json'));
 
 const connection = mysql.createConnection({
-  host: 'localhost',
-  database: 'test',
+  host: 'rockwotj-ubuntu.wlan.rose-hulman.edu',
+  database: 'test1',
   user: 'rockwotj',
-  password: 'foobar'
+  password: SECRETS.dbPassword
 });
 
 const app = express();
@@ -22,55 +24,24 @@ app.use(bodyParser.json());
 
 connection.connect();
 
-// # Create table first
-//
-// CREATE TABLE todos(
-//   id INT NOT NULL AUTO_INCREMENT,
-//   task TEXT,
-//   done BOOL,
-//   PRIMARY KEY ( id )
-// )
-//
-// # Then create user table
-//
-// CREATE TABLE users(
-//   username VARCHAR(10) NOT NULL,
-//   password VARCHAR(255),
-//   salt     VARCHAR(255),
-//   PRIMARY KEY (username)
-// )
-//
-// # and migrate todos table
-//
-// ALTER TABLE todos ADD COLUMN user VARCHAR(10); 
-// ALTER TABLE FOREIGN KEY (user) REFERENCES users(username);
-//
-// # TODO: Figure out permissions...
-// # Add a user to MySQL 
-// create user 'rockwotj'@'localhost' identified by 'pass';
-// # Add them to that db
-// grant all privileges on test.* to rockwotj@'localhost' identified by 'pass';
-
-const secret = 'foobar';
-
 app.post('/login', (req, res, next) => {
   var username = req.body.username;
   var password = req.body.password;
-  connection.query('SELECT * FROM user WHERE username=?', username, (err, rows) => {
-    if (err) {
-      next(err);
-    } else if (rows.length !== 1) {
-      res.status(401).json({error: 'Invalid username'});
-    } else {
+  connection.query('SELECT * FROM users WHERE username=?', username, (err, rows) => {
+     if (err) {
+        next(err);
+     } else if (rows.length !== 1) {
+        res.status(401).json({error: 'Invalid Username'});
+     } else {
       var user = rows[0];
       password = md5(password + user.salt);
-      if (password != user.password) {
-        res.status(401).json({error: 'Invalid username'});
+      if (password !== user.password) {
+        res.status(401).json({error: 'Invalid password'});
         return;
       }
-      var token = jwt.sign({username: username}, secret);
-      res.json({token: token}); 
-    }
+      var token = jwt.sign({username: username}, SECRETS.jwt);
+      res.json({token: token});
+     }
   });
 });
 
@@ -80,27 +51,27 @@ app.post('/signup', (req, res, next) => {
   var salt = uuid.v1();
   password = md5(password + salt);
   var user = {username: username, password: password, salt: salt};
-  connection.query('INSERT INTO user SET ?', user, (err, rows) => {
+  connection.query('INSERT INTO users SET ?', user, (err, rows) => {
     if (err) {
       next(err);
     } else {
-      var token = jwt.sign({username: username}, secret);
-      res.json({token: token}); 
+      var token = jwt.sign({username: username}, SECRETS.jwt);
+      res.json({token: token});
     }
   });
 });
 
 app.use('/api', (req, res, next) => {
-  var token = req.headers['x-auth-token'];
+  var token = req.headers['x-auth-token'];     
   var decoded;
   try {
-    decoded = jwt.verify(token, secret);
+    decoded = jwt.verify(token, SECRETS.jwt);
   } catch (e) {
     return next(e);
   }
   if (!decoded) {
     res.status(403).json({error: 'Invalid login'});
-  } else {
+  }  else {
     req.username = decoded.username;
     next();
   }
@@ -134,8 +105,7 @@ app.post('/api', (req, res, next) => {
 app.put('/api/:id', (req, res, next) => {
   var todo = _.pick(req.body, 'task', 'done');
   var id = req.params.id;
-  var username = req.username;
-  connection.query('UPDATE todos SET ? WHERE id=? AND user=?', [todo, id, username], (err, result) => {
+  connection.query('UPDATE todos SET ? WHERE id=? AND user=?', [todo, id, req.username], (err, result) => {
     if (err) {
       return next(err);
     }
@@ -145,8 +115,7 @@ app.put('/api/:id', (req, res, next) => {
 
 app.delete('/api/:id', (req, res, next) => {
   var id = req.params.id;
-  var username = req.username;
-  connection.query('DELETE FROM todos WHERE id=? AND user=?', [id, username], (err, results) => {
+  connection.query('DELETE FROM todos WHERE id=? AND user=?', [id, req.username], (err, results) => {
     if (err) {
       return next(err);
     }
@@ -159,5 +128,5 @@ app.use(function(err, req, res, next) {
   res.status(500).json({error: err});
 });
 
-app.listen(3000);
+app.listen(8080);
 

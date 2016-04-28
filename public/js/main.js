@@ -1,3 +1,4 @@
+
 $(document).ready(function() {
   $.Mustache.load('templates.html')
   .done(function() {
@@ -17,18 +18,17 @@ $.ajaxSetup({
 
 function loadHome() {
   $('#main').empty().mustache('home'); 
-  $.ajaxSetup({
-    headers: {
-      "X-Auth-Token": getToken()
-    }
-  });
   getTodos();
+  $.ajaxSetup({
+    headers: { "X-Auth-Token": getToken()}
+  });
   setMainBindings();
 };
 
 function getTodos() {
   $.ajax({
-    url: '/api'
+    url: '/api',
+    headers: { "X-Auth-Token": getToken()}
   }).then(function(data) {
     $('#table-body')
     .empty()
@@ -45,6 +45,7 @@ function setMainBindings() {
       $.ajax({
         url: '/api',
         method: 'POST',
+        headers: { "X-Auth-Token": getToken()},
         data: JSON.stringify({task: task, done: false}),
         success: function (data) {
           $('#table-body')
@@ -68,6 +69,7 @@ function setTableBindings() {
     $.ajax({
       url: '/api/' + id,
       method: 'PUT',
+      headers: { "X-Auth-Token": getToken()},
       data: JSON.stringify({done: checked})
     })
   });
@@ -82,6 +84,7 @@ function setTableBindings() {
       $.ajax({
         url: '/api/' + id,
         method: 'PUT',
+        headers: { "X-Auth-Token": getToken()},
         data: JSON.stringify({task: task})
       });
       $('div.task[key="'+id+'"]').html(task);
@@ -94,6 +97,7 @@ function setTableBindings() {
     $(this).parents('tr').remove();
     $.ajax({
       url: '/api/' + id,
+      headers: { "X-Auth-Token": getToken()},
       method: 'DELETE'
     });
   });
