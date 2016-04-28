@@ -1,14 +1,14 @@
 
 function isLoggedIn() {
-  // TODO
+  return !!localStorage.getItem('token');
 };
 
 function setToken(token) {
-  // TODO
+  localStorage.setItem('token', token);
 };
 
 function getToken() {
-  // TODO
+  return localStorage.getItem('token');
 };
 
 function loadLogin() {
