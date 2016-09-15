@@ -5,7 +5,7 @@ const _ = require('underscore');
 
 
 const connection = mysql.createConnection({
-   host: '127.0.0.1',
+   host: '0.0.0.0',
   user : 'root',
   password : 'root',
   database: 'hello'
