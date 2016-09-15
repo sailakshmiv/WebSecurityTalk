@@ -5,8 +5,10 @@ const _ = require('underscore');
 
 
 const connection = mysql.createConnection({
-  host: 'rockwotj-ubuntu.wlan.rose-hulman.edu',
-  database: '<DB HERE>'
+   host: '127.0.0.1',
+  user : 'root',
+  password : 'root',
+  database: 'hello'
 });
 
 const app = express();
@@ -67,5 +69,5 @@ app.use(function(err, req, res, next) {
   res.status(500).json({error: err});
 });
 
-app.listen(8080);
+app.listen(3000);
 
